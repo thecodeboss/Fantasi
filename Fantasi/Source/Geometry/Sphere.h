@@ -1,10 +1,12 @@
 #ifndef Sphere_h__
 #define Sphere_h__
+#include "../OpenGL/GL.h"
 
 struct Sphere
 {
-	float x, y, z, r;
-	Sphere(float X, float Y, float Z, float R) : x(X), y(Y), z(Z), r(R) {}
+	vec3 pos;
+	float r;
+	Sphere(vec3 p, float R) : pos(p), r(R) {}
 };
 
 #endif // Sphere_h__

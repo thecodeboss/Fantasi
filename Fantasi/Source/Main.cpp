@@ -21,9 +21,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	GLuint ComputeHandle = g_OpenGLContext->CreateComputeProgram(TextureHandle);
 
 	Scene* MainScene = new Scene();
-	MainScene->AddSphere(-1.0f, 0.0f, 10.0f, 1.0f);
-	MainScene->AddSphere(1.0f,  2.0f, 10.0f, 0.8f);
-	MainScene->AddSphere(0.0f, -2.0f, 10.0f, 0.6f);
+	for (float i = 8.0f; i <= 12.0f; i+=0.5f)
+	{
+		for (float j = -2.0f; j <= 2.0f; j+=0.5f)
+		{
+			for (float k = -2.0f; k <= 2.0f; k+=0.5f)
+			{
+				MainScene->AddSphere(vec3(j, k, i), 0.1f);
+			}
+		}
+	}
+	/*MainScene->AddSphere(vec3(-1.0f, 0.0f, 10.0f), 1.0f);
+	MainScene->AddSphere(vec3(1.0f,  2.0f, 10.0f), 0.8f);
+	MainScene->AddSphere(vec3(0.0f, -2.0f, 10.0f), 0.6f);*/
+	MainScene->AddPointLight(vec3(8.0f, 0.0f, 10.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	bool done = false;
 	int frame = 0;

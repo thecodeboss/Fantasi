@@ -23,7 +23,8 @@ private:
 	HWND m_WindowIdentifier;
 	Settings* settings;
 
-	GLuint SpheresBuffer;
+	GLuint SpheresBufferID;
+	GLuint PointLightsBufferID;
 };
 
 #endif // OpenGLContext_h__

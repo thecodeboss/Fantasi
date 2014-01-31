@@ -1,8 +1,10 @@
 #version 430
 #define FAR_CLIP 10000.0f
+#define TOL 0.001f
 #pragma optionNV(unroll all)
 
 uniform uint NumSpheres;
+uniform uint NumPointLights;
 uniform writeonly image2D destTex;
 
 layout (local_size_x = 16, local_size_y = 16) in;
@@ -19,9 +21,20 @@ struct Ray
 	vec3 dir;
 };
 
+struct PointLight
+{
+	vec3 pos;
+	vec4 color;
+};
+
 layout(std430, binding = 1) buffer SpheresBuffer
 {
 	Sphere spheres[];
+};
+
+layout(std430, binding = 2) buffer PointLightBuffer
+{
+	PointLight pointlights[];
 };
 
 float FindRaySphereIntersection(Ray r, Sphere s)
@@ -44,12 +57,12 @@ float FindRaySphereIntersection(Ray r, Sphere s)
 		t1 = p - t1;
 
 		// If the ray started inside the sphere, we don't render it
-		if ( (t1 < 0.0 && t2 > 0.0) || (t1 > 0.0 && t2 < 0.0) )
+		if ( (t1 < -TOL && t2 > TOL) || (t1 > TOL && t2 < -TOL) )
 		{
 			return FAR_CLIP;
 		}
 
-		if ( min(t1, t2) < 0.0)
+		if ( min(t1, t2) < -TOL)
 		{
 			return FAR_CLIP;
 		}
@@ -60,19 +73,40 @@ float FindRaySphereIntersection(Ray r, Sphere s)
 	}
 }
 
+vec4 ComputeColor(vec3 Intersection)
+{
+	for (int i=0; i<NumPointLights; i++)
+	{
+		Ray r = Ray(Intersection, normalize(pointlights[i].pos - Intersection));
+		bool IsVisible = true;
+		for (int j=0; j<NumSpheres; j++)
+		{
+			float t = FindRaySphereIntersection(r, spheres[j]);
+			if (t > -TOL && t < FAR_CLIP)
+			{
+				IsVisible = false;
+			}
+		}
+		if (IsVisible) return pointlights[i].color;
+	}
+	return vec4(0.2f, 0.2f, 0.2f, 1.0f);
+}
+
 void main()
 {
 	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
 	imageStore(destTex, storePos, vec4(0.0, 0.0, 0.0, 1.0));
-	
+
 	vec3 RayDir = vec3(storePos.x - 256.0, storePos.y - 256.0, 512.0);
 	Ray r = Ray(vec3(0.0, 0.0, 0.0), normalize(RayDir));
 	for (int i=0; i<NumSpheres; i++)
 	{
 		float t = FindRaySphereIntersection(r, spheres[i]);
-		if (t > 0.0f && t < FAR_CLIP)
+		if (t > TOL && t < FAR_CLIP)
 		{
-			imageStore(destTex, storePos, vec4(1.0, 1.0, 1.0, 1.0));
+			vec3 Intersection = r.origin + t*r.dir;
+			vec4 OverallColor = ComputeColor(Intersection);
+			imageStore(destTex, storePos, OverallColor);
 			break;
 		}
 	}

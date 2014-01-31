@@ -72,7 +72,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\glew-1.10.0\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\glew-1.10.0\include;..\glm-0.9.4.6;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -86,7 +86,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\glew-1.10.0\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\glew-1.10.0\include;..\glm-0.9.4.6;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -102,7 +102,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\glew-1.10.0\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\glew-1.10.0\include;..\glm-0.9.4.6;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -120,7 +120,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MBCS;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\glew-1.10.0\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\glew-1.10.0\include;..\glm-0.9.4.6;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Geometry\Sphere.cpp" />
+    <ClCompile Include="Source\Lighting\PointLight.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="Source\OpenGL\Shader.cpp" />
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Debugging\Macros.h" />
     <ClInclude Include="Source\Geometry\Sphere.h" />
+    <ClInclude Include="Source\Lighting\PointLight.h" />
     <ClInclude Include="Source\OpenGL\GL.h" />
     <ClInclude Include="Source\OpenGL\OpenGLContext.h" />
     <ClInclude Include="Source\OpenGL\Shader.h" />
