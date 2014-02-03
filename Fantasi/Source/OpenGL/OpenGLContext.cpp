@@ -138,6 +138,8 @@ GLuint OpenGLContext::CreateRenderProgram(GLuint texHandle) {
 	glVertexAttribPointer(posPtr, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(posPtr);
 
+	checkErrors();
+
 	return progHandle;
 }
 
@@ -160,43 +162,103 @@ GLuint OpenGLContext::CreateComputeProgram(GLuint texHandle) {
 	}   
 	glUseProgram(progHandle);
 
-	glGenBuffers(1, &SpheresBufferID);
-	glGenBuffers(1, &PointLightsBufferID);
+	// Generate a buffer for all object types
+	for (int i = Scene::S_FIRST; i < Scene::S_COUNT; i++)
+	{
+		glGenBuffers(1, &BufferIDs[i]);
+	}
 
 	glUniform1i(glGetUniformLocation(progHandle, "destTex"), 0);
 
+	checkErrors();
+
 	return progHandle;
+}
+
+void* OpenGLContext::MapBuffer(GLuint ComputeHandle, GLuint BufferID, GLuint LayoutID, size_t BufferSize, size_t ElementSize)
+{
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, BufferID);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, LayoutID, BufferID);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, BufferSize*ElementSize, NULL, GL_STATIC_DRAW);
+	return glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, BufferSize*ElementSize, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
 }
 
 void OpenGLContext::RayTrace(Scene* scene, GLuint ComputeHandle)
 {
 	glUseProgram(ComputeHandle);
 
-
-	size_t NumSpheres = scene->GetNumSpheres();
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, SpheresBufferID);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, SpheresBufferID);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, NumSpheres*sizeof(Sphere), NULL, GL_STATIC_DRAW);
-	struct Sphere* spheres = (struct Sphere*) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NumSpheres*sizeof(Sphere), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
-	for (size_t i=0; i < NumSpheres; i++)
+	size_t NumObjects = scene->GetNumChildrenByType(Scene::S_OBJECT);
+	if (NumObjects > 0)
 	{
-		spheres[i] = scene->GetSphereAt(static_cast<unsigned>(i));
+		struct Object* objects = (struct Object*) MapBuffer(ComputeHandle, BufferIDs[Scene::S_OBJECT], 1, NumObjects, sizeof(Object));
+		for (size_t i=0; i < NumObjects; i++)
+		{
+			objects[i] = *(struct Object*) scene->GetChildAt(Scene::S_OBJECT, static_cast<unsigned>(i));
+		}
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glUniform1ui(glGetUniformLocation(ComputeHandle, "NumObjects"), static_cast<GLuint>(NumObjects));
+
+		checkErrors();
 	}
-	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-	glUniform1ui(glGetUniformLocation(ComputeHandle, "NumSpheres"), static_cast<GLuint>(NumSpheres));
 
-
-	size_t NumPointLights = scene->GetNumPointLights();
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, PointLightsBufferID);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, PointLightsBufferID);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, NumPointLights*sizeof(PointLight), NULL, GL_STATIC_DRAW);
-	struct PointLight* pointlights = (struct PointLight*) glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, NumPointLights*sizeof(PointLight), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
-	for (size_t i=0; i < NumPointLights; i++)
+	size_t NumSpheres = scene->GetNumChildrenByType(Scene::S_SPHERE);
+	if (NumSpheres > 0)
 	{
-		pointlights[i] = scene->GetPointLightAt(static_cast<unsigned>(i));
+		struct Sphere* spheres = (struct Sphere*) MapBuffer(ComputeHandle, BufferIDs[Scene::S_SPHERE], 2, NumSpheres, sizeof(Sphere));
+		for (size_t i=0; i < NumSpheres; i++)
+		{
+			spheres[i] = *(struct Sphere*) scene->GetChildAt(Scene::S_SPHERE, static_cast<unsigned>(i));
+		}
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glUniform1ui(glGetUniformLocation(ComputeHandle, "NumSpheres"), static_cast<GLuint>(NumSpheres));
+
+		checkErrors();
 	}
-	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-	glUniform1ui(glGetUniformLocation(ComputeHandle, "NumPointLights"), static_cast<GLuint>(NumPointLights));
+
+	size_t NumTriangles = scene->GetNumChildrenByType(Scene::S_TRIANGLE);
+	if (NumTriangles > 0)
+	{
+		struct Triangle* triangles = (struct Triangle*) MapBuffer(ComputeHandle, BufferIDs[Scene::S_TRIANGLE], 3, NumTriangles, sizeof(Triangle));
+		for (size_t i=0; i < NumTriangles; i++)
+		{
+			triangles[i] = *(struct Triangle*) scene->GetChildAt(Scene::S_TRIANGLE, static_cast<unsigned>(i));
+		}
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glUniform1ui(glGetUniformLocation(ComputeHandle, "NumTriangles"), static_cast<GLuint>(NumTriangles));
+
+		checkErrors();
+	}
+
+	size_t NumPointLights = scene->GetNumChildrenByType(Scene::S_POINTLIGHT);
+	if (NumPointLights > 0)
+	{
+		struct PointLight* pointlights = (struct PointLight*) MapBuffer(ComputeHandle, BufferIDs[Scene::S_POINTLIGHT], 4, NumPointLights, sizeof(PointLight));
+		for (size_t i=0; i < NumPointLights; i++)
+		{
+			pointlights[i] = *(struct PointLight*) scene->GetChildAt(Scene::S_POINTLIGHT, static_cast<unsigned>(i));
+		}
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glUniform1ui(glGetUniformLocation(ComputeHandle, "NumPointLights"), static_cast<GLuint>(NumPointLights));
+
+		checkErrors();
+	}
+
+	size_t NumBasicMaterials = scene->GetNumChildrenByType(Scene::S_BASICMATERIAL);
+	if (NumBasicMaterials > 0)
+	{
+		struct BasicMaterial* basicmaterials = (struct BasicMaterial*) MapBuffer(ComputeHandle, BufferIDs[Scene::S_BASICMATERIAL], 5, NumBasicMaterials, sizeof(BasicMaterial));
+		for (size_t i=0; i < NumBasicMaterials; i++)
+		{
+			basicmaterials[i] = *(struct BasicMaterial*) scene->GetChildAt(Scene::S_BASICMATERIAL, static_cast<unsigned>(i));
+		}
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glUniform1ui(glGetUniformLocation(ComputeHandle, "NumBasicMaterials"), static_cast<GLuint>(NumBasicMaterials));
+
+		checkErrors();
+	}
+
+	glUniform1ui(glGetUniformLocation(ComputeHandle, "NumReflections"), scene->NumReflections);
+	glUniformMatrix4fv(glGetUniformLocation(ComputeHandle, "ViewMatrix"), 1, GL_FALSE, &scene->ViewMatrix[0][0]);
 
 	glDispatchCompute(512/16, 512/16, 1); // 512^2 threads in blocks of 16^2
 }

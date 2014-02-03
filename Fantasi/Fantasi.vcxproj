@@ -131,9 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Geometry\Object.cpp" />
     <ClCompile Include="Source\Geometry\Sphere.cpp" />
+    <ClCompile Include="Source\Geometry\Triangle.cpp" />
     <ClCompile Include="Source\Lighting\PointLight.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Materials\BasicMaterial.cpp" />
     <ClCompile Include="Source\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="Source\OpenGL\Shader.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -141,8 +144,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Debugging\Macros.h" />
+    <ClInclude Include="Source\Geometry\Object.h" />
     <ClInclude Include="Source\Geometry\Sphere.h" />
+    <ClInclude Include="Source\Geometry\Triangle.h" />
+    <ClInclude Include="Source\IO\Keyboard.h" />
     <ClInclude Include="Source\Lighting\PointLight.h" />
+    <ClInclude Include="Source\Materials\BasicMaterial.h" />
     <ClInclude Include="Source\OpenGL\GL.h" />
     <ClInclude Include="Source\OpenGL\OpenGLContext.h" />
     <ClInclude Include="Source\OpenGL\Shader.h" />

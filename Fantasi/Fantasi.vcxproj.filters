@@ -18,6 +18,15 @@
     <ClCompile Include="Source\Lighting\PointLight.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Materials\BasicMaterial.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Geometry\Object.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Geometry\Triangle.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\OpenGL\GL.h">
@@ -45,6 +54,18 @@
     <ClInclude Include="Source\Lighting\PointLight.h">
       <Filter>Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Materials\BasicMaterial.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Object.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry\Triangle.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\IO\Keyboard.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Settings">
@@ -67,6 +88,12 @@
     </Filter>
     <Filter Include="Lighting">
       <UniqueIdentifier>{90caf1dc-fc3b-4c7e-858c-43326f6872b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{43b79088-44fb-43d1-8eb5-03a15e962647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{c40464f6-be78-445c-9869-40be414a34bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

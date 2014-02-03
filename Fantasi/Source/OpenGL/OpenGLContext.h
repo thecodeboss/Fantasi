@@ -17,14 +17,14 @@ public:
 	GLuint CreateComputeProgram(GLuint texHandle);
 	void RayTrace(Scene* scene, GLuint ComputeHandle);
 	void Render(GLuint ProgramHandle);
+	void* MapBuffer(GLuint ComputeHandle, GLuint BufferID, GLuint LayoutID, size_t BufferSize, size_t ElementSize);
 private:
 	HGLRC m_RenderingContext;
 	HDC m_DeviceContext;
 	HWND m_WindowIdentifier;
 	Settings* settings;
 
-	GLuint SpheresBufferID;
-	GLuint PointLightsBufferID;
+	GLuint BufferIDs[Scene::S_COUNT];
 };
 
 #endif // OpenGLContext_h__

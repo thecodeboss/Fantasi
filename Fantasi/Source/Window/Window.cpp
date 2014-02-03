@@ -37,11 +37,13 @@ LRESULT CALLBACK Window::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPA
 	{
 	case WM_KEYDOWN:
 		{
-			//Do nothing for now
+			OnKeyDownBinding(wparam);
+			return 0;
 		}
 	case WM_KEYUP:
 		{
-			// Do nothing for now
+			OnKeyUpBinding(wparam);
+			return 0;
 		}
 	default:
 		{
@@ -157,4 +159,14 @@ unsigned Window::HandleMessages()
 	}
 
 	return m_msg.message;
+}
+
+void Window::AttachOnKeyDown( std::function<void(WPARAM)> f )
+{
+	OnKeyDownBinding = f;
+}
+
+void Window::AttachOnKeyUp( std::function<void(WPARAM)> f )
+{
+	OnKeyUpBinding = f;
 }

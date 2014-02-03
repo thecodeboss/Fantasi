@@ -1,29 +1,57 @@
 #ifndef Scene_h__
 #define Scene_h__
+#include <windows.h>
 #include <vector>
+#include <map>
 #include "OpenGL/GL.h"
+#include "Geometry/Object.h"
 #include "Geometry/Sphere.h"
+#include "Geometry/Triangle.h"
 #include "Lighting/PointLight.h"
+#include "Materials/BasicMaterial.h"
 
 class Scene
 {
 
-	std::vector<Sphere*> Spheres;
-	std::vector<PointLight*> PointLights;
+public:
+
+	enum ChildType
+	{
+		S_OBJECT,
+		S_SPHERE,
+		S_TRIANGLE,
+		S_POINTLIGHT,
+		S_BASICMATERIAL,
+
+		// Special Elements
+		S_COUNT,
+		S_FIRST = S_OBJECT,
+		S_LAST = S_BASICMATERIAL
+	};
+
+private:
+
+	typedef std::vector<void*> ChildVector_t;
+	typedef std::map<ChildType, ChildVector_t> ChildMap_t;
+
+	ChildMap_t Children;
+
+	std::map<WPARAM, bool> KeyDownStatus;
 
 public:
+
+	int NumReflections;
+	mat4 ViewMatrix;
 
 	Scene();
 	virtual ~Scene();
 	void Tick(int frame);
+	void HandleOnKeyDown(WPARAM w);
+	void HandleOnKeyUp(WPARAM w);
 
-	void AddSphere(vec3 pos, float r);
-	size_t GetNumSpheres();
-	Sphere GetSphereAt(unsigned i);
-
-	void AddPointLight(vec3 pos, vec4 color);
-	size_t GetNumPointLights();
-	PointLight GetPointLightAt(unsigned i);
+	void AddChild(ChildType ct, void* child);
+	size_t GetNumChildrenByType(ChildType ct);
+	void* GetChildAt(ChildType ct, int index);
 };
 
 #endif // Scene_h__
