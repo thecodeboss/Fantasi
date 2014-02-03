@@ -1,5 +1,5 @@
 #include "Scene.h"
-#include "IO/Keyboard.h"
+#include "Input/Keyboard.h"
 
 Scene::Scene() : NumReflections(1)
 {

@@ -145,7 +145,7 @@ float FindRaySphereIntersection(Ray r, Sphere s)
 
 float FindRayTriangleIntersection(Ray r, Triangle p)
 {
-	// Based on Moller-Trumbone paper
+	// Based on Moller-Trumbore paper
 	vec3 E1 = p.v1 - p.v0;
 	vec3 E2 = p.v2 - p.v0;
 	vec3 T = r.origin - p.v0;
@@ -229,7 +229,9 @@ void main()
 	for (int i=0; i < NumReflections+1; i++)
 	{
 		float nearest_t = FAR_CLIP;
+		float nearest_t2 = FAR_CLIP;
 		int nearest_index = 0;
+		int nearest_index2 = -1;
 		for (int j=0; j<NumObjects; j++)
 		{
 			float t = FAR_CLIP;
@@ -242,8 +244,12 @@ void main()
 					t = FindRayTriangleIntersection(r, triangles[objects[j].index]);
 					break;
 			}
-		
-			if (t <= nearest_t-EPSILON && t > EPSILON && t < FAR_CLIP)
+			if (t > EPSILON && t < FAR_CLIP && abs(nearest_t - t) < EPSILON)
+			{
+				nearest_index2 = nearest_index;
+				nearest_t2 = nearest_t;
+			}
+			if (t < nearest_t+EPSILON && t > EPSILON && t < FAR_CLIP)
 			{
 				nearest_t = t;
 				nearest_index = j;
@@ -252,8 +258,21 @@ void main()
 
 		if (nearest_t < FAR_CLIP)
 		{
-			vec3 Intersection = r.origin + nearest_t*r.dir;
-			OverallColor += reflectance * ComputeBasicMaterialColor(nearest_index, r.origin, Intersection);
+			vec3 Intersection;
+			vec4 c1;
+			if (nearest_index2 >= 0)
+			{
+				Intersection = r.origin + min(nearest_t, nearest_t2)*r.dir;
+				c1 = ComputeBasicMaterialColor(nearest_index, r.origin, Intersection);
+				vec4 c2 = ComputeBasicMaterialColor(nearest_index2, r.origin, Intersection);
+				c1 = mix(c1, c2, 0.5f*abs(nearest_t-nearest_t2)/EPSILON);
+			}
+			else
+			{
+				Intersection = r.origin + nearest_t*r.dir;
+				c1 = ComputeBasicMaterialColor(nearest_index, r.origin, Intersection);
+			}
+			OverallColor += reflectance * c1;
 
 			if (i == NumReflections) break;
 

@@ -1,9 +1,13 @@
 #include "Window/Window.h"
 #include "Settings/Settings.h"
 #include "Debugging/Macros.h"
+#include "Input/XMLParser.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
+	XMLParser* xmlParser = new XMLParser("Scene1.xml");
+	XMLTree* tree = xmlParser->ParseTree();
+
 	// Initialize the game's settings
 	// In the future probably read this from a file
 	Settings * MainSettings = new Settings(

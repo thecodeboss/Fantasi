@@ -134,6 +134,7 @@
     <ClCompile Include="Source\Geometry\Object.cpp" />
     <ClCompile Include="Source\Geometry\Sphere.cpp" />
     <ClCompile Include="Source\Geometry\Triangle.cpp" />
+    <ClCompile Include="Source\Input\XMLParser.cpp" />
     <ClCompile Include="Source\Lighting\PointLight.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Materials\BasicMaterial.cpp" />
@@ -147,7 +148,9 @@
     <ClInclude Include="Source\Geometry\Object.h" />
     <ClInclude Include="Source\Geometry\Sphere.h" />
     <ClInclude Include="Source\Geometry\Triangle.h" />
-    <ClInclude Include="Source\IO\Keyboard.h" />
+    <ClInclude Include="Source\Helpers\String.h" />
+    <ClInclude Include="Source\Input\Keyboard.h" />
+    <ClInclude Include="Source\Input\XMLParser.h" />
     <ClInclude Include="Source\Lighting\PointLight.h" />
     <ClInclude Include="Source\Materials\BasicMaterial.h" />
     <ClInclude Include="Source\OpenGL\GL.h" />

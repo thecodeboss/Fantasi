@@ -27,6 +27,9 @@
     <ClCompile Include="Source\Geometry\Triangle.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\XMLParser.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\OpenGL\GL.h">
@@ -63,7 +66,13 @@
     <ClInclude Include="Source\Geometry\Triangle.h">
       <Filter>Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Source\IO\Keyboard.h">
+    <ClInclude Include="Source\Input\XMLParser.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Helpers\String.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Keyboard.h">
       <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
@@ -94,6 +103,9 @@
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{c40464f6-be78-445c-9869-40be414a34bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{5977d736-9228-43d5-9b80-6553c5887877}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
