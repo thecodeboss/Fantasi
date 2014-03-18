@@ -1,6 +1,7 @@
 #ifndef GL_h__
 #define GL_h__
 
+#include "../Debugging/Macros.h"
 #include <windows.h>
 
 #define GL_GLEXT_PROTOTYPES

@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Debugging\Macros.h" />
+    <ClInclude Include="Source\Geometry\Metaball.h" />
     <ClInclude Include="Source\Geometry\Object.h" />
     <ClInclude Include="Source\Geometry\Sphere.h" />
     <ClInclude Include="Source\Geometry\Triangle.h" />
@@ -161,7 +162,7 @@
     <ClInclude Include="Source\Window\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Shaders\Shader.comp" />
+    <None Include="Source\Shaders\Shader.glsl" />
     <None Include="Source\Shaders\Shader.frag" />
     <None Include="Source\Shaders\Shader.vert" />
   </ItemGroup>

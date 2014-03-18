@@ -75,6 +75,9 @@
     <ClInclude Include="Source\Input\Keyboard.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Geometry\Metaball.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Settings">
@@ -109,13 +112,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Shaders\Shader.comp">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Source\Shaders\Shader.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Source\Shaders\Shader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Source\Shaders\Shader.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

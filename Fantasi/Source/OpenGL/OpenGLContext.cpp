@@ -16,7 +16,7 @@ OpenGLContext::OpenGLContext()
 
 bool OpenGLContext::CreateContext(HWND WindowIdentifier, Settings* settings) {
 	m_WindowIdentifier = WindowIdentifier; // Set the WindowsIdentifier for our window
-	settings = settings;
+	m_Settings = settings;
 
 	m_DeviceContext = GetDC(WindowIdentifier); // Get the device context for our window
 
@@ -138,6 +138,10 @@ GLuint OpenGLContext::CreateRenderProgram(GLuint texHandle) {
 	glVertexAttribPointer(posPtr, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(posPtr);
 
+	// Cleanup
+	delete VShader;
+	delete FShader;
+
 	checkErrors();
 
 	return progHandle;
@@ -147,7 +151,7 @@ GLuint OpenGLContext::CreateComputeProgram(GLuint texHandle) {
 	// Creating the compute shader, and the program object containing the shader
 	GLuint progHandle = glCreateProgram();
 	Shader* shader = new Shader();
-	GLuint cs = shader->CreateAndAttach("Source\\Shaders\\Shader.comp", GL_COMPUTE_SHADER, progHandle);
+	GLuint cs = shader->CreateAndAttach("Source\\Shaders\\Shader.glsl", GL_COMPUTE_SHADER, progHandle);
 
 	int rvalue;
 	glLinkProgram(progHandle);
@@ -169,6 +173,9 @@ GLuint OpenGLContext::CreateComputeProgram(GLuint texHandle) {
 	}
 
 	glUniform1i(glGetUniformLocation(progHandle, "destTex"), 0);
+
+	// Cleanup
+	delete shader;
 
 	checkErrors();
 
@@ -257,10 +264,25 @@ void OpenGLContext::RayTrace(Scene* scene, GLuint ComputeHandle)
 		checkErrors();
 	}
 
+	size_t NumMetaballs = scene->GetNumChildrenByType(Scene::S_METABALL);
+	if (NumMetaballs > 0)
+	{
+		struct Metaball* metaballs = (struct Metaball*) MapBuffer(ComputeHandle, BufferIDs[Scene::S_METABALL], 6, NumMetaballs, sizeof(Metaball));
+		for (size_t i=0; i < NumMetaballs; i++)
+		{
+			metaballs[i] = *(struct Metaball*) scene->GetChildAt(Scene::S_METABALL, static_cast<unsigned>(i));
+		}
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glUniform1ui(glGetUniformLocation(ComputeHandle, "NumMetaballs"), static_cast<GLuint>(NumMetaballs));
+
+		checkErrors();
+	}
+
 	glUniform1ui(glGetUniformLocation(ComputeHandle, "NumReflections"), scene->NumReflections);
+	glUniform1f(glGetUniformLocation(ComputeHandle, "AntiAlias"), scene->AntiAlias);
 	glUniformMatrix4fv(glGetUniformLocation(ComputeHandle, "ViewMatrix"), 1, GL_FALSE, &scene->ViewMatrix[0][0]);
 
-	glDispatchCompute(512/16, 512/16, 1); // 512^2 threads in blocks of 16^2
+	glDispatchCompute(m_Settings->ScreenX/16, m_Settings->ScreenY/16, 1); // 512^2 threads in blocks of 16^2
 }
 
 void OpenGLContext::Render(GLuint RenderHandle)

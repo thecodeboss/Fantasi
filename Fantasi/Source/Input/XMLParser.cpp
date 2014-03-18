@@ -4,6 +4,14 @@
 #include <stack>
 #include <fstream>
 
+XMLTree::~XMLTree()
+{
+	for (auto it=Children.begin(); it != Children.end(); it++)
+	{
+		delete *it;
+	}
+}
+
 XMLTree* XMLParser::ParseTree()
 {
 	std::ifstream in(xml_file, std::ios::in);
@@ -11,7 +19,7 @@ XMLTree* XMLParser::ParseTree()
 	{
 		std::string contents;
 		in.seekg(0, std::ios::end);
-		contents.resize(in.tellg());
+		contents.resize(static_cast<unsigned>(in.tellg()));
 		in.seekg(0, std::ios::beg);
 		in.read(&contents[0], contents.size());
 		in.close();
@@ -65,7 +73,7 @@ XMLTree* XMLParser::ParseTree(std::string& input)
 
 void XMLParser::Lex(LexList& Lex, std::string& input)
 {
-	int pos = 0, count = 0;
+	unsigned pos = 0, count = 0;
 	bool reading_tag = false, reading_content = false, reading_end_tag = false;
 	std::stringstream ss;
 	while (pos < input.length())

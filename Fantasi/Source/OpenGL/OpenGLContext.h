@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include "GL.h"
+#include "../Debugging/Macros.h"
 #include "../Settings/Settings.h"
 #include "Shader.h"
 #include "../Scene.h"
@@ -22,7 +23,7 @@ private:
 	HGLRC m_RenderingContext;
 	HDC m_DeviceContext;
 	HWND m_WindowIdentifier;
-	Settings* settings;
+	Settings* m_Settings;
 
 	GLuint BufferIDs[Scene::S_COUNT];
 };

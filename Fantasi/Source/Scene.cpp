@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "Input/Keyboard.h"
 
-Scene::Scene() : NumReflections(1)
+Scene::Scene() : NumReflections(1), AntiAlias(1.0f), bExitSignalled(false)
 {
 	for (int it = ChildType::S_FIRST; it < ChildType::S_COUNT; it++)
 	{
@@ -23,14 +23,16 @@ Scene::~Scene()
 
 void Scene::Tick(int frame)
 {
-	//for (auto it = Children[Scene::S_POINTLIGHT].begin(); it != Children[Scene::S_POINTLIGHT].end(); it++)
-	//{
-	//	vec3 ref = vec3(0.0f, 0.0f, 10.0f);
-	//	mat4 RotateMatrix = mat4(1.0f);
-	//	RotateMatrix = glm::rotate(RotateMatrix, 2.0f, vec3(0.0f, 1.0f, 0.0f));
-	//	PointLight* p = (PointLight*)(*it);
-	//	p->pos = ref + vec3(RotateMatrix * vec4(p->pos - ref, 1.0f));
-	//}
+	float i = 0.0f;
+	for (auto it = Children[Scene::S_METABALL].begin(); it != Children[Scene::S_METABALL].end(); it++)
+	{
+		i++;
+		vec3 ref = vec3(-40.0f, 6.0f, 22.0f);
+		mat4 RotateMatrix = mat4(1.0f);
+		RotateMatrix = glm::rotate(RotateMatrix, i, vec3(0.0f, 1.0f+i, 0.5f*(i+1)));
+		Metaball* m = (Metaball*)(*it);
+		m->pos = ref + vec3(RotateMatrix * vec4(m->pos - ref, 1.0f));
+	}
 
 	vec3 ref = vec3(0.0f, 0.0f, 50.0f);
 	mat4 RotateMatrix = mat4(1.0f);
@@ -44,6 +46,15 @@ void Scene::Tick(int frame)
 		{
 			switch (it->first)
 			{
+			case KEY_1:
+				AntiAlias = 1.0f;
+				break;
+			case KEY_2:
+				AntiAlias = 2.0f;
+				break;
+			case KEY_3:
+				AntiAlias = 3.0f;
+				break;
 			case KEY_W: case KEY_UP:
 				if (KeyDownStatus.find(KEY_SHIFT) != KeyDownStatus.end() && KeyDownStatus[KEY_SHIFT])
 				{
@@ -57,6 +68,11 @@ void Scene::Tick(int frame)
 			case KEY_A: case KEY_LEFT:
 				ViewMatrix = glm::translate(ViewMatrix, vec3(-1.0f, 0.0f, 0.0f));
 				break;
+			case KEY_R:
+				NumReflections++;
+				NumReflections %= 4;
+				it->second ^= true;
+				break;
 			case KEY_S: case KEY_DOWN:
 				if (KeyDownStatus.find(KEY_SHIFT) != KeyDownStatus.end() && KeyDownStatus[KEY_SHIFT])
 				{
@@ -69,6 +85,9 @@ void Scene::Tick(int frame)
 				break;
 			case KEY_D: case KEY_RIGHT:
 				ViewMatrix = glm::translate(ViewMatrix, vec3(1.0f, 0.0f, 0.0f));
+				break;
+			case KEY_ESC:
+				bExitSignalled = true;
 				break;
 			default:
 				break;

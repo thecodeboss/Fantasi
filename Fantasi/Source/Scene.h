@@ -3,10 +3,12 @@
 #include <windows.h>
 #include <vector>
 #include <map>
+#include "Debugging/Macros.h"
 #include "OpenGL/GL.h"
 #include "Geometry/Object.h"
 #include "Geometry/Sphere.h"
 #include "Geometry/Triangle.h"
+#include "Geometry/Metaball.h"
 #include "Lighting/PointLight.h"
 #include "Materials/BasicMaterial.h"
 
@@ -22,11 +24,13 @@ public:
 		S_TRIANGLE,
 		S_POINTLIGHT,
 		S_BASICMATERIAL,
+		S_METABALL,
+		S_TORUS,
 
 		// Special Elements
 		S_COUNT,
 		S_FIRST = S_OBJECT,
-		S_LAST = S_BASICMATERIAL
+		S_LAST = S_TORUS
 	};
 
 private:
@@ -41,7 +45,9 @@ private:
 public:
 
 	int NumReflections;
+	float AntiAlias;
 	mat4 ViewMatrix;
+	bool bExitSignalled;
 
 	Scene();
 	virtual ~Scene();

@@ -2,6 +2,7 @@
 #define Shader_h__
 
 #include <string>
+#include "../Debugging/Macros.h"
 #include "GL.h"
 
 class Shader

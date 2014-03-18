@@ -146,6 +146,7 @@ bool Window::Initialize(Settings* settings)
 
 bool Window::Shutdown()
 {
+	delete g_OpenGLContext;
 	return true;
 }
 

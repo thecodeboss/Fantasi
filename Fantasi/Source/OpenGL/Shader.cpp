@@ -42,7 +42,7 @@ string Shader::ReadShaderFile( const char *ShaderFile )
 	string str;
 
 	File.seekg(0, ios::end);
-	str.reserve(File.tellg());
+	str.reserve(static_cast<unsigned>(File.tellg()));
 	File.seekg(0, ios::beg);
 
 	str.assign((istreambuf_iterator<char>(File)), istreambuf_iterator<char>());

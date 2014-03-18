@@ -5,15 +5,18 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
+	// A short XML test
 	XMLParser* xmlParser = new XMLParser("Scene1.xml");
 	XMLTree* tree = xmlParser->ParseTree();
+	delete tree;
+	delete xmlParser;
 
 	// Initialize the game's settings
 	// In the future probably read this from a file
 	Settings * MainSettings = new Settings(
 		"Fantasi",	// Program Title
-		512,		// Screen Width
-		512,		// Screen Height
+		1024,		// Screen Width
+		768,		// Screen Height
 		false		// Is Full Screen
 	);
 	Scene* MainScene = new Scene();
@@ -28,9 +31,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	GLuint ComputeHandle = g_OpenGLContext->CreateComputeProgram(TextureHandle);
 
 	MainScene->ViewMatrix = mat4(1.0f);
-	MainScene->ViewMatrix = glm::translate(MainScene->ViewMatrix, vec3(0.0f, 0.0f, -1.0f));
-	MainScene->NumReflections = 2;
+	MainScene->ViewMatrix = glm::translate(MainScene->ViewMatrix, vec3(-25.0f, 6.0f, -48.0f));
+	MainScene->NumReflections = 1;
+	MainScene->AntiAlias = 1.0f;
 
+	// Default grey
 	MainScene->AddChild(Scene::S_BASICMATERIAL, new BasicMaterial(vec4(0.0f, 0.0f, 0.0f, 0.0f), vec4(0.07f, 0.07f, 0.07f, 1.0f), vec4(0.7f, 0.7f, 0.65f, 1.0f), vec4(0.0f, 0.0f, 0.0f, 1.0f), 0.0f, 10.0f, 10.0f, 1.0f));
 
 	// Polished Copper
@@ -39,20 +44,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	// Gold
 	MainScene->AddChild(Scene::S_BASICMATERIAL, new BasicMaterial(vec4(0.0f, 0.0f, 0.0f, 0.0f), vec4(0.24725f, 0.1995f, 0.0745f, 1.0f), vec4(0.75164f, 0.60648f, 0.22648f, 1.0f), vec4(0.628281f, 0.555802f, 0.366065f, 1.0f), 51.2f, 0.47f, 10.0f, 0.0f));
 
-	//for (int i=-5; i <= 5; i++)
-	//{
-	//	for (int j=-5; j <= 5; j++)
-	//	{
-	//		MainScene->AddChild(Scene::S_SPHERE, new Sphere(vec3(20.0f*i, -5.0f, 20.0f*j), 5.0f));
-	//		MainScene->AddChild(Scene::S_OBJECT, new Object(0, (i+5)*11 + (j+5), 0, 2));
-	//	}
-	//}
-
 	MainScene->AddChild(Scene::S_SPHERE, new Sphere(vec3(0.0f, 0.0f, 50.0f), 10.0f));
 	MainScene->AddChild(Scene::S_OBJECT, new Object(0, 0, 0, 2));
 
 	MainScene->AddChild(Scene::S_SPHERE, new Sphere(vec3(7.0f, -6.0f, 35.0f), 4.0f));
 	MainScene->AddChild(Scene::S_OBJECT, new Object(0, 1, 0, 2));
+
+	MainScene->AddChild(Scene::S_METABALL, new Metaball(vec3(-40.0f, 4.0f, 30.0f), 10.0f));
+	MainScene->AddChild(Scene::S_OBJECT, new Object(2, 0, 0, 2));
+
+	MainScene->AddChild(Scene::S_METABALL, new Metaball(vec3(-48.0, 3.0f, 24.0f), 10.0f));
+	MainScene->AddChild(Scene::S_OBJECT, new Object(2, 1, 0, 2));
+
+	MainScene->AddChild(Scene::S_METABALL, new Metaball(vec3(-30.0f, 4.0f, 20.0f), 10.0f));
+	MainScene->AddChild(Scene::S_OBJECT, new Object(2, 2, 0, 2));
+
+	MainScene->AddChild(Scene::S_METABALL, new Metaball(vec3(-35.0f, 9.0f, 27.0f), 10.0f));
+	MainScene->AddChild(Scene::S_OBJECT, new Object(2, 3, 0, 2));
+
+	MainScene->AddChild(Scene::S_METABALL, new Metaball(vec3(-43.0f, 15.0f, 33.0f), 10.0f));
+	MainScene->AddChild(Scene::S_OBJECT, new Object(2, 4, 0, 2));
 
 	// Bottom
 	MainScene->AddChild(Scene::S_TRIANGLE, new Triangle(vec3(-200.0f, -10.0f, -200.0f), vec3(200.0f, -10.0f, 200.0f), vec3(200.0f, -10.0f, -200.0f)));
@@ -115,7 +126,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	{
 		// Handle Windows messages
 		// If windows signals to end the application then exit out.
-		if(MainWindow->HandleMessages() == WM_QUIT)
+		if(MainWindow->HandleMessages() == WM_QUIT || MainScene->bExitSignalled)
 		{
 			done = true;
 		}
@@ -133,8 +144,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	}
 
 	// Cleanup
+	MainWindow->Shutdown();
 	delete MainScene;
 	delete MainWindow;
 	delete MainSettings;
+
+#if MEMORY_LEAK_CHECKING
+	_CrtDumpMemoryLeaks();
+#endif
+
 	return 0;
 }
