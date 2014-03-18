@@ -1,7 +1,10 @@
 #ifndef Macros_h__
 #define Macros_h__
 
-#if _DEBUG
+// Ignore complaints about semi-colons used with debug macros
+#pragma warning( disable : 4390 )
+
+#ifdef _DEBUG
 	#define MEMORY_LEAK_CHECKING 1
 	#define _CRTDBG_MAP_ALLOC
 	#include <stdlib.h>
@@ -18,6 +21,10 @@
 #include <windows.h>
 #include <sstream>
 
-#define DEBUG_PRINT(msg) if (_DEBUG) { std::wostringstream os_; os_ << msg; OutputDebugStringW( os_.str().c_str() ); }
+#ifdef _DEBUG
+	#define DEBUG_PRINT(msg) if (_DEBUG) { std::wostringstream os_; os_ << msg; OutputDebugStringW( os_.str().c_str() ); }
+#else
+	#define DEBUG_PRINT(msg)
+#endif
 
 #endif // Macros_h__

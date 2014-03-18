@@ -1,9 +1,9 @@
 #ifndef Scene_h__
 #define Scene_h__
+#include "Debugging/Macros.h"
 #include <windows.h>
 #include <vector>
 #include <map>
-#include "Debugging/Macros.h"
 #include "OpenGL/GL.h"
 #include "Geometry/Object.h"
 #include "Geometry/Sphere.h"

@@ -1,8 +1,8 @@
 #ifndef Shader_h__
 #define Shader_h__
 
-#include <string>
 #include "../Debugging/Macros.h"
+#include <string>
 #include "GL.h"
 
 class Shader

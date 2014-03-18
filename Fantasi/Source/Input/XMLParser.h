@@ -1,9 +1,9 @@
 #ifndef XMLParser_h__
 #define XMLParser_h__
+#include "../Debugging/Macros.h"
 #include <vector>
 #include <string>
 #include <sstream>
-#include "../Debugging/Macros.h"
 
 struct XMLTree
 {

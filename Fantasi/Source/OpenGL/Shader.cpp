@@ -1,5 +1,4 @@
 #include "Shader.h"
-#include "../Debugging/Macros.h"
 #include <fstream>
 using namespace std;
 

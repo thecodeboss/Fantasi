@@ -1,9 +1,9 @@
 #ifndef Window_h__
 #define Window_h__
 
+#include "../Debugging/Macros.h"
 #include <windows.h>
 #include <functional>
-#include "../Debugging/Macros.h"
 #include "../OpenGL/OpenGLContext.h"
 #include "../Settings/Settings.h"
 

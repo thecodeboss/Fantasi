@@ -11,22 +11,7 @@
       <Filter>Window</Filter>
     </ClCompile>
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Geometry\Sphere.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene.cpp" />
-    <ClCompile Include="Source\Lighting\PointLight.cpp">
-      <Filter>Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Materials\BasicMaterial.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Geometry\Object.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Geometry\Triangle.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Input\XMLParser.cpp">
       <Filter>Input</Filter>
     </ClCompile>
