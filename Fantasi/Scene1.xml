@@ -1,0 +1,63 @@
+<BasicMaterial>
+	<Name>WhiteLambert</Name>
+	<EmissiveColor>0.0, 0.0, 0.0, 1.0</EmissiveColor>
+	<AmbientColor>0.07, 0.07, 0.07, 1.0</AmbientColor>
+	<DiffuseColor>0.7, 0.7, 0.65, 1.0</DiffuseColor>
+	<SpecularColor>0.0, 0.0, 0.0, 1.0</SpecularColor>
+	<Shininess>0.0</Shininess>
+	<RefractiveIndex>10.0</RefractiveIndex>
+	<AbsoptionCoefficient>10.0</AbsoptionCoefficient>
+	<Dielectric>1.0</Dielectric>
+</BasicMaterial>
+
+<BasicMaterial>
+	<Name>PolishedCopper</Name>
+	<EmissiveColor>0.0, 0.0, 0.0, 1.0</EmissiveColor>
+	<AmbientColor>0.2295, 0.08825, 0.0275, 1.0</AmbientColor>
+	<DiffuseColor>0.5508, 0.2118, 0.066, 1.0</DiffuseColor>
+	<SpecularColor>0.580594, 0.223257, 0.0695701, 1.0</SpecularColor>
+	<Shininess>51.2</Shininess>
+	<RefractiveIndex>2.43</RefractiveIndex>
+	<AbsoptionCoefficient>6.6</AbsoptionCoefficient>
+	<Dielectric>0.0</Dielectric>
+</BasicMaterial>
+
+<BasicMaterial>
+	<Name>Gold</Name>
+	<EmissiveColor>0.0, 0.0, 0.0, 1.0</EmissiveColor>
+	<AmbientColor>0.24725, 0.1995, 0.0745, 1.0</AmbientColor>
+	<DiffuseColor>0.75164, 0.60648, 0.22648, 1.0</DiffuseColor>
+	<SpecularColor>0.628281, 0.555802, 0.366065, 1.0</SpecularColor>
+	<Shininess>51.2</Shininess>
+	<RefractiveIndex>0.47</RefractiveIndex>
+	<AbsoptionCoefficient>10.0</AbsoptionCoefficient>
+	<Dielectric>0.0</Dielectric>
+</BasicMaterial>
+
+<PointLight>
+	<Name>Light1</Name>
+	<Position>-7.0, 20.0, 12.0</Position>
+	<Color>1.0, 1.0, 1.0, 1.0</Color>
+</PointLight>
+
+<Sphere>
+	<Name>Sphere1</Name>
+	<Position>0.0, 0.0, 50.0</Position>
+	<Radius>10.0</Radius>
+	<BasicMaterial>Gold</BasicMaterial>
+</Sphere>
+
+<Sphere>
+	<Name>Sphere2</Name>
+	<Position>7.0, -6.0, 35.0</Position>
+	<Radius>4.0</Radius>
+	<BasicMaterial>Gold</BasicMaterial>
+</Sphere>
+
+<Cube>
+	<Name>Cube1</Name>
+	<Min>-200.0, -10.0, -200.0</Min>
+	<Max>200.0f, 50.0f, 200.0f</Max>
+	<Inside>true</Inside>
+	<BasicMaterial>PolishedCopper</BasicMaterial>
+</Cube>
