@@ -29,8 +29,11 @@ Controls
 ========
 
 'W', 'A', 'S', 'D': Forward, left, back, right (or you can use arrow keys).
+
 'R': Increase number of reflections
+
 '1', '2', '3': Set the anti-alias parameter
+
 'Shift': Maps 'W' and 'S' (and corresponding arrow keys) to up/down instead of forward/back.
 
 Future Development
