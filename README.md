@@ -51,3 +51,15 @@ on this on my blog at some point, if I can organize the thoughts floating in my 
 I was struck with the sudden motivation to write an XML parser, so I could store my scene
 geometry somewhere other than Main.cpp.  So I wrote it - but then got lazy to actually
 use the darn thing.  I'll do it at some point.
+
+License and Restrictions
+========================
+
+Fantasi is free to use, modify, and distribute assuming this readme remains, with this
+license unmodified.  Using Fantasi code for profit is prohibited unless given permission
+to do so.  Generally speaking if you contact me about using some of the code for profit,
+it will be acceptable, but doing so without contacting me is NOT.
+
+Fantasi is provided AS IS, and the user assumes all risks involved with using the software.
+I am not responsible for damaged software/hardware in any form, and I am not obligated to
+provide bug fixes or new features (though if you contact me I will probably be helpful).
